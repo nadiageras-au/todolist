@@ -4,10 +4,13 @@ import {FilterValuesType} from "./App";
 type ButtonPropsType = {
     title: string
     onClickHandler: () => void
+    isDisabled?: boolean
 }
 export const Button = (props: ButtonPropsType) => {
     return (
-        <button onClick={props.onClickHandler}>
+        <button
+        disabled={props.isDisabled}
+            onClick={props.onClickHandler}>
             {props.title}
         </button>
     );
