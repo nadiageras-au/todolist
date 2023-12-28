@@ -24,7 +24,7 @@ export const Todolist = (props: TodolistPropsType) => {
     const tasksList = tasks.map(task => <li key={task.id}><input type="checkbox"
                                                                  checked={task.isDone}/><span>{task.title}</span>
 
-        <Button title='x' onClickHandler={() => {
+        <Button title='x' onClick={() => {
             removeTask(task.id)
         }}/>
     </li>)
@@ -42,20 +42,20 @@ export const Todolist = (props: TodolistPropsType) => {
             <h3>{title}</h3>
             <div>
                 <input  ref={taskTitleInput}/>
-                <Button title={'+'} onClickHandler={addTaskHandler}/>
+                <Button title={'+'} onClick={addTaskHandler}/>
                 {/*<button>+</button>*/}
             </div>
             <ul>
                 {tasksList}
             </ul>
             <div>
-                <Button title='All' onClickHandler={() => {
+                <Button title='All' onClick={() => {
                     changeFilter('all')
                 }}/>
-                <Button title='Active' onClickHandler={() => {
+                <Button title='Active' onClick={() => {
                     changeFilter('active')
                 }}/>
-                <Button title='Completed' onClickHandler={() => {
+                <Button title='Completed' onClick={() => {
                     changeFilter('completed')
                 }}/>
 

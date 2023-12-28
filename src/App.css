@@ -13,3 +13,26 @@
     background-color: #edffcd;
     padding: 15px;
 }
+
+.is-done {
+    opacity: 0.6;
+    font-style: italic;
+    text-decoration: line-through;
+}
+
+.btn-active {
+    background-color: #7e9afd;
+    color: #fff;
+    border-color: #7e9afd;
+    border-radius: 2px;
+}
+
+.input-error {
+    border: 2px solid red;
+    outline: none;
+}
+
+.red-text {
+    font-size: 14px;
+    color: red;
+}
