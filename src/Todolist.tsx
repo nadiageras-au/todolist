@@ -8,40 +8,42 @@ export type TaskType = {
     isDone: boolean
 }
 
-type TodolistPropsType = {
+export type TodolistPropsType = {
+    idTodolist: string
     title: string
     tasks: Array<TaskType>
     filterValue: FilterValuesType,
-    changeTaskStatus: (idTask: string, isDoneNewStatus: boolean) => void
-    addTask: (title: string) => void
-    removeTask: (id: string) => void
-    changeFilter: (value: FilterValuesType) => void
+    changeTaskStatus: (idTodoList:string,idTask: string, isDoneNewStatus: boolean) => void
+    addTask: (idTodoList:string,title: string) => void
+    removeTask: (idTodoList:string,id: string) => void
+    changeFilter: (value: FilterValuesType, idTodoList: string) => void
 }
 export const Todolist = ({
-         title,
-         tasks,
-         changeTaskStatus,
-         addTask,
-         filterValue,
-         removeTask,
-         changeFilter
-     }: TodolistPropsType) => {
+             idTodolist,
+             title,
+             tasks,
+             changeTaskStatus,
+             addTask,
+             filterValue,
+             removeTask,
+             changeFilter
+                         }: TodolistPropsType) => {
 
-    const [taskTitle, setTaskTitle] = useState("234");
+    const [taskTitle, setTaskTitle] = useState("");
     const [inputError, setInputError] = useState(false)
-    const onClickHandler = (taskId: string) => {
-        removeTask(taskId)
+    const onClickHandler = (idTodoList:string, taskId: string) => {
+        removeTask(idTodoList,taskId)
     }
-    const onChangeHandler = (taskId: string, isDone: boolean) => {
-        changeTaskStatus(taskId, isDone);
+    const onChangeHandler = (idTodoList:string,taskId: string, isDone: boolean) => {
+        changeTaskStatus(idTodoList,taskId, isDone);
     }
     const tasksList = tasks.map(task =>
         <li key={task.id} className={task.isDone ? "is-done" : ""}>
             <input type="checkbox" checked={task.isDone}
-                   onChange={(e) => onChangeHandler(task.id, e.currentTarget.checked)}
+                   onChange={(e) => onChangeHandler(idTodolist, task.id, e.currentTarget.checked)}
             />
             <span>{task.title}</span>
-            <Button title='x' onClick={() => onClickHandler(task.id)}/>
+            <Button title='x' onClick={() => onClickHandler(idTodolist,task.id)}/>
         </li>)
 
     const listItems: JSX.Element = tasks.length !== 0
@@ -52,7 +54,7 @@ export const Todolist = ({
     const addTaskHandler = () => {
         const trimmedTaskTitle = taskTitle.trim()
         if (trimmedTaskTitle) {
-            addTask(taskTitle)
+            addTask(idTodolist,taskTitle)
         } else {
             // alert("In your input just only spaces")
             setInputError(true)
@@ -70,25 +72,25 @@ export const Todolist = ({
             <h3>{title}</h3>
             <div>
                 <input value={taskTitle}
-                       onChange={(e) =>{
+                       onChange={(e) => {
                            setTaskTitle(e.currentTarget.value);
                            inputError && setInputError(false)
                        }}
                        onKeyDown={addTaskKeyDownHandler}
-                className={inputError ? "input-error" : ""}/>
+                       className={inputError ? "input-error" : ""}/>
                 <Button title={'+'} onClick={addTaskHandler} isDisabled={!taskTitle}/>
                 {inputError && <div className={'red-text'}>Field is required</div>}
             </div>
             {listItems}
             <div>
                 <Button classes={filterValue === "all" ? "btn-active" : ""} title='All' onClick={() => {
-                    changeFilter('all')
+                    changeFilter('all', idTodolist)
                 }}/>
                 <Button classes={filterValue === "active" ? "btn-active" : ""} title='Active' onClick={() => {
-                    changeFilter('active')
+                    changeFilter('active', idTodolist)
                 }}/>
                 <Button classes={filterValue === "completed" ? "btn-active" : ""} title='Completed' onClick={() => {
-                    changeFilter('completed')
+                    changeFilter('completed', idTodolist)
                 }}/>
 
             </div>
