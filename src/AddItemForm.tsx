@@ -3,17 +3,16 @@ import {Button} from "./Button";
 
 
 type AddItemFormProps = {
-    addTitle: (newTitle:string, todolistId:string)=>void
-    todolistId: string
+    addItemTitle: (newTitle:string)=>void
 }
-export const AddItemForm = ({addTitle, todolistId}:AddItemFormProps) => {
+export const AddItemForm = ({addItemTitle}:AddItemFormProps) => {
     const [title, setTitle] = useState("");
     const [error, setError] = useState(false)
 
-    const addTaskHandler = () => {
+    const addTitleHandler = () => {
         const trimmedTaskTitle = title.trim()
         if (trimmedTaskTitle) {
-            addTitle(todolistId,title)
+            addItemTitle(title)
         } else {
             // alert("In your input just only spaces")
             setError(true)
@@ -22,7 +21,7 @@ export const AddItemForm = ({addTitle, todolistId}:AddItemFormProps) => {
     }
     const addTaskKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            addTaskHandler()
+            addTitleHandler()
         }
     }
     return (
@@ -34,7 +33,7 @@ export const AddItemForm = ({addTitle, todolistId}:AddItemFormProps) => {
     }}
     onKeyDown={addTaskKeyDownHandler}
     className={error ? "input-error" : ""}/>
-    <Button title={'+'} onClick={addTaskHandler} isDisabled={!title}/>
+    <Button title={'+'} onClick={addTitleHandler} isDisabled={!title}/>
     {error && <div className={'red-text'}>Field is required</div>}
     </div>
     );

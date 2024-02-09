@@ -1,6 +1,15 @@
 .App {
   padding: 30px;
   display: flex;
+flex-direction: column;
+}
+
+.dflex {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 50px;
+    gap: 30px;
 }
 
 .App > div {
