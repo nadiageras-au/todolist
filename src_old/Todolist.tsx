@@ -14,29 +14,28 @@ export type TodolistPropsType = {
     title: string
     tasks: Array<TaskType>
     filterValue: FilterValuesType,
-    changeTaskStatus: (idTodoList:string,idTask: string, isDoneNewStatus: boolean) => void
-    addTask: (idTodoList:string,title: string) => void
-    removeTask: (idTodoList:string,id: string) => void
+    changeTaskStatus: (idTodoList: string, idTask: string, isDoneNewStatus: boolean) => void
+    addTask: (idTodoList: string, title: string) => void
+    removeTask: (idTodoList: string, id: string) => void
     changeFilter: (value: FilterValuesType, idTodoList: string) => void
 }
 export const Todolist = ({
-             idTodolist,
-             title,
-             tasks,
-             changeTaskStatus,
-             addTask,
-             filterValue,
-             removeTask,
-             changeFilter
+                             idTodolist,
+                             title,
+                             tasks,
+                             changeTaskStatus,
+                             addTask,
+                             filterValue,
+                             removeTask,
+                             changeFilter
                          }: TodolistPropsType) => {
 
-    const [taskTitle, setTaskTitle] = useState("");
-    const [inputError, setInputError] = useState(false)
-    const onClickHandler = (idTodoList:string, taskId: string) => {
-        removeTask(idTodoList,taskId)
+
+    const onClickHandler = (idTodoList: string, taskId: string) => {
+        removeTask(idTodoList, taskId)
     }
-    const onChangeHandler = (idTodoList:string,taskId: string, isDone: boolean) => {
-        changeTaskStatus(idTodoList,taskId, isDone);
+    const onChangeHandler = (idTodoList: string, taskId: string, isDone: boolean) => {
+        changeTaskStatus(idTodoList, taskId, isDone);
     }
     const tasksList = tasks.map(task =>
         <li key={task.id} className={task.isDone ? "is-done" : ""}>
@@ -44,29 +43,16 @@ export const Todolist = ({
                    onChange={(e) => onChangeHandler(idTodolist, task.id, e.currentTarget.checked)}
             />
             <span>{task.title}</span>
-            <Button title='x' onClick={() => onClickHandler(idTodolist,task.id)}/>
+            <Button title='x' onClick={() => onClickHandler(idTodolist, task.id)}/>
         </li>)
 
     const listItems: JSX.Element = tasks.length !== 0
         ? <ul>{tasksList}</ul>
         : <span> Task list is empty</span>
 
-
-    const addTaskHandler = () => {
-        const trimmedTaskTitle = taskTitle.trim()
-        if (trimmedTaskTitle) {
-            addTask(idTodolist,taskTitle)
-        } else {
-            // alert("In your input just only spaces")
-            setInputError(true)
-        }
-        setTaskTitle("")
-    }
-
     return (
         <div className="todoList">
             <h3>{title}</h3>
-
             <AddItemForm addTitle={addTask} todolistId={idTodolist}/>
             {listItems}
 
@@ -85,3 +71,4 @@ export const Todolist = ({
         </div>
     )
 }
+
