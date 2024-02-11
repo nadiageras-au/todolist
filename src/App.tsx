@@ -68,10 +68,18 @@ function App() {
         setTasks({...tasks, [newTodoId]:[{id: v1(), title: "New Task", isDone: false}]})
     }
 
+    const changeItemTitle = (idTodoList: string, taskId: string, title:string)=> {
+        setTasks({...tasks,[idTodoList]:tasks[idTodoList].map((el)=>el.id === taskId ? {...el, title} : el)})
+    } //ChangeTaskTitle
+
+    const changeListTitle =(idTodoList: string,title:string)=> {
+        setTodolists(todolists.map((el)=>el.id === idTodoList ? {...el,title} : el));
+    }
     return (
         <div className="App">
             <div>
                 <h3>Add New TodoLIst</h3>
+
                 <AddItemForm addItemTitle={addTodolist}/>
             </div>
            <div className="dflex">
@@ -96,6 +104,8 @@ function App() {
                            changeTaskStatus={changeTaskStatus}
                            removeTask={removeTask}
                            changeFilter={changeFilter}
+                           changeTitle={changeItemTitle}
+                           changeListTitle={changeListTitle}
                        />
                    })
                }
