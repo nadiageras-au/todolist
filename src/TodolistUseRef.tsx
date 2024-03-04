@@ -1,6 +1,6 @@
 import React, {useRef} from "react";
 import {FilterValuesType} from "./App";
-import {Button} from "./Button";
+import {ButtonUniversal} from "./Button";
 
 export type TaskType = {
     id: string
@@ -24,7 +24,7 @@ export const Todolist = (props: TodolistPropsType) => {
     const tasksList = tasks.map(task => <li key={task.id}><input type="checkbox"
                                                                  checked={task.isDone}/><span>{task.title}</span>
 
-        <Button title='x' onClick={() => {
+        <ButtonUniversal title='x' onClick={() => {
             removeTask(task.id)
         }}/>
     </li>)
@@ -42,20 +42,20 @@ export const Todolist = (props: TodolistPropsType) => {
             <h3>{title}</h3>
             <div>
                 <input  ref={taskTitleInput}/>
-                <Button title={'+'} onClick={addTaskHandler}/>
+                <ButtonUniversal title={'+'} onClick={addTaskHandler}/>
                 {/*<button>+</button>*/}
             </div>
             <ul>
                 {tasksList}
             </ul>
             <div>
-                <Button title='All' onClick={() => {
+                <ButtonUniversal title='All' onClick={() => {
                     changeFilter('all')
                 }}/>
-                <Button title='Active' onClick={() => {
+                <ButtonUniversal title='Active' onClick={() => {
                     changeFilter('active')
                 }}/>
-                <Button title='Completed' onClick={() => {
+                <ButtonUniversal title='Completed' onClick={() => {
                     changeFilter('completed')
                 }}/>
 
