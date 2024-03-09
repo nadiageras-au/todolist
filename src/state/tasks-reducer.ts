@@ -1,6 +1,6 @@
-
 import {TasksStateType, TodolistType} from "../App";
 import {v1} from "uuid";
+import {AddTodoListActionType, RemoveTodoListActionType} from "./todolists-reducer";
 //import {v1} from "uuid";
 
 
@@ -30,13 +30,20 @@ export type changeTaskTitleActionType = {
     todolistId: string,
 }
 
-type ActionsType = RemoveTaskActionType | addTaskActionType | changeTaskStatusActionType |changeTaskTitleActionType
+type ActionsType = RemoveTaskActionType
+    | addTaskActionType
+    | changeTaskStatusActionType
+    | changeTaskTitleActionType
+    | AddTodoListActionType
+    | RemoveTodoListActionType
 
 export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksStateType => {
     switch (action.type) {
         case 'REMOVE-TASK': {
-            return {...state,
-                [action.todolistId]: state[action.todolistId].filter((t=>(t.id !== action.taskId)))}
+            return {
+                ...state,
+                [action.todolistId]: state[action.todolistId].filter((t => (t.id !== action.taskId)))
+            }
         }
         case 'ADD-TASK': {
             return {
@@ -47,19 +54,33 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
         case 'CHANGE-TASK-STATUS': {
             return {
                 ...state,
-                [action.todolistId]: state[action.todolistId].map(el=> el.id === action.taskId
-                    ? {...el, isDone : action.isDone}
-            : el)
+                [action.todolistId]: state[action.todolistId].map(el => el.id === action.taskId
+                    ? {...el, isDone: action.isDone}
+                    : el)
             }
         }
 
         case 'CHANGE-TASK-TITLE': {
             return {
                 ...state,
-                [action.todolistId]: state[action.todolistId].map(el=> el.id === action.taskId
-                    ? {...el, title : action.title}
-            : el)
+                [action.todolistId]: state[action.todolistId].map(el => el.id === action.taskId
+                    ? {...el, title: action.title}
+                    : el)
             }
+        }
+        case 'ADD-TODOLIST': {
+            return {
+                ...state,
+                [action.todolistId]: []
+            }
+        }
+        case 'REMOVE-TODOLIST': {
+            let copyState =  {...state}
+            delete copyState[action.todolistId]
+            return copyState
+            // second way to delete todolist
+            // const {[action.id]: [], ...rest} = state
+            // return rest
         }
         default:
             throw new Error('I don\'t understand this type')
