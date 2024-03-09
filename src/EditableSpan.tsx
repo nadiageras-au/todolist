@@ -12,6 +12,8 @@ export const EditableSpan = (props:EditableSpanProps) => {
 
     const onChangeHandler= (e:ChangeEvent<HTMLInputElement>) => {
     // @ts-ignore
+        console.log("jkjk")
+        // @ts-ignore
         let newTitle = e.currentTarget.value;
     setTitle(newTitle)
     }
