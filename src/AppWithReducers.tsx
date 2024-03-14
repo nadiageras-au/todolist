@@ -31,12 +31,12 @@ function AppWithReducers() {
 
     let [todolists, dispatchToTodolistsReducer] =
 
-        useReducer<Reducer<TodolistType[], TodolistsReducerActionsType>>(todolistsReducer,[
-        {id: todolistID1, title: 'What to learn', filter: 'all'},
-        {id: todolistID2, title: 'What to buy', filter: 'all'},
-    ])
+        useReducer<Reducer<TodolistType[], TodolistsReducerActionsType>>(todolistsReducer, [
+            {id: todolistID1, title: 'What to learn', filter: 'all'},
+            {id: todolistID2, title: 'What to buy', filter: 'all'},
+        ])
 
-    let [tasks, dispatchToTasksReducer] = useReducer(tasksReducer,{
+    let [tasks, dispatchToTasksReducer] = useReducer(tasksReducer, {
         [todolistID1]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
@@ -56,57 +56,40 @@ function AppWithReducers() {
     const removeTask = (idTodolist: string, id: string) => {
         const action = removeTaskAC(id, idTodolist)
         dispatchToTasksReducer(action);
-        // setTasks({...tasks, [idTodolist]: tasks[idTodolist].filter(ft => ft.id !== id)});
     }
-
     const removeTodolist = (idTodolist: string) => {
-        dispatchToTodolistsReducer(RemoveTodolistAC(idTodolist));
-        // let newListTDL = todolists.filter(el=> el.id !==idTodolist)
-        // setTodolists(newListTDL);
-        // delete tasks[idTodolist];
+        const action = RemoveTodolistAC(idTodolist)
+        dispatchToTodolistsReducer(action);
+        dispatchToTasksReducer(action)
     }
 
     const changeTaskStatus = (idTodolist: string, taskId: string, isDoneNewValue: boolean) => {
-        dispatchToTasksReducer(changeTaskStatusAC(idTodolist,isDoneNewValue,taskId))
-
-        // let task = tasks[idTodolist].find(t => t.id === taskId);
-        // if (task) {
-        //     task.isDone = isDoneNewValue
-        // }
-        // setTasks({...tasks, [idTodolist]: tasks[idTodolist]});
+        dispatchToTasksReducer(changeTaskStatusAC(idTodolist, isDoneNewValue, taskId))
     }
 
     const addTask = (idTodolist: string, title: string) => {
-        dispatchToTasksReducer(addTaskAC(title,idTodolist))
-        // let newTask = {id: v1(), title: title, isDone: false};
-        // setTasks({...tasks, [idTodolist]: [newTask, ...tasks[idTodolist]]})
+        dispatchToTasksReducer(addTaskAC(title, idTodolist))
     }
 
     //else
     function changeFilter(value: FilterValuesType, idTodoList: string) {
         dispatchToTodolistsReducer(ChangeTodoListFilterAC(idTodoList, value))
-        // setTodolists(todolists.map(filtered => filtered.id === idTodoList
-        //     ? {...filtered, filter: value}
-        //     : filtered))
     }
 
     const addTodolist = (title: string) => {
-        dispatchToTodolistsReducer(AddTodolistAC(title))
-        // let newTodoId = v1()
-        // let newTodo: TodolistType = {id: newTodoId, title, filter: 'all'}
-        // setTodolists([...todolists, newTodo]);
-        // setTasks({...tasks, [newTodoId]: [{id: v1(), title: "New Task", isDone: false}]})
+        const action =AddTodolistAC(title)
+        dispatchToTodolistsReducer(action)
+        dispatchToTasksReducer(action)
     }
 
     const changeItemTitle = (idTodoList: string, taskId: string, title: string) => {
-        dispatchToTasksReducer(changeTaskTitleAC(idTodoList,taskId,title))
-        // setTasks({...tasks, [idTodoList]: tasks[idTodoList].map((el) => el.id === taskId ? {...el, title} : el)})
+        dispatchToTasksReducer(changeTaskTitleAC(idTodoList, taskId, title))
     } //ChangeTaskTitle
 
     const changeListTitle = (idTodoList: string, title: string) => {
-        dispatchToTodolistsReducer(ChangeTodolisTitleAC(idTodoList,title))
-        // setTodolists(todolists.map((el) => el.id === idTodoList ? {...el, title} : el));
+        dispatchToTodolistsReducer(ChangeTodolisTitleAC(idTodoList, title))
     }
+
     return (
 
         <div className="App">
@@ -131,19 +114,19 @@ function AppWithReducers() {
 
                         return <Grid item>
 
-                                <Todolist
-                                    key={tl.id}
-                                    idTodolist={tl.id}
-                                    title={tl.title}
-                                    tasks={tasksForTodolist}
-                                    filterValue={tl.filter}
-                                    addTask={addTask}
-                                    changeTaskStatus={changeTaskStatus}
-                                    removeTask={removeTask}
-                                    removeTodolist={removeTodolist}
-                                    changeFilter={changeFilter}
-                                    changeTitle={changeItemTitle}
-                                    changeListTitle={changeListTitle}/>
+                            <Todolist
+                                key={tl.id}
+                                idTodolist={tl.id}
+                                title={tl.title}
+                                tasks={tasksForTodolist}
+                                filterValue={tl.filter}
+                                addTask={addTask}
+                                changeTaskStatus={changeTaskStatus}
+                                removeTask={removeTask}
+                                removeTodolist={removeTodolist}
+                                changeFilter={changeFilter}
+                                changeTitle={changeItemTitle}
+                                changeListTitle={changeListTitle}/>
 
                         </Grid>
 
