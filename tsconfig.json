@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
     //"target": "es6",
-//    "lib": ["es5", "es6", "dom"],
-    "lib": [
-//      "es5",
-      "es6",
-      "DOM",
-      "DOM.Iterable",
-      "esnext"
-    ],
+    "lib": ["es5", "es6", "dom"],
+//    "lib": [
+////      "es5",
+//      "es6",
+//      "DOM",
+//      "ES2017",
+//      "DOM.Iterable",
+//      "esnext"
+//    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

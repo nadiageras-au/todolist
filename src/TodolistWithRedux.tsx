@@ -11,6 +11,7 @@ import {AppRootStateType} from "./state/store";
 import {useDispatch, useSelector} from "react-redux";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
 import {ChangeTodoListFilterAC, ChangeTodolisTitleAC, RemoveTodolistAC} from "./state/todolists-reducer";
+import {useCallback} from "react";
 
 export type TaskType = {
     id: string
@@ -45,9 +46,9 @@ export const TodolistWithRedux = ({
         tasks = tasks.filter(t => t.isDone === true);
     }
 
-    const addTaskHandler = (title: string) => {
+    const addTaskHandler = useCallback((title: string) => {
         dispatch(addTaskAC(idTodolist, title))
-    }
+    }, [])
 
     const changeTodolistTitle = (newTitle: string) => {
         dispatch(ChangeTodolisTitleAC(idTodolist, newTitle));
@@ -66,6 +67,7 @@ export const TodolistWithRedux = ({
 
             { tasks.map(task => {
                 const onChangeHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
+                    // @ts-ignore
                     dispatch(changeTaskStatusAC(task.id, e.currentTarget.checked, idTodolist))
                 }
                 const changeTaskTitle = (newTitle: string) => {

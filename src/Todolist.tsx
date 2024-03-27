@@ -5,8 +5,8 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Paper} from "@mui/material";
-import CheckBox from "./CheckBox";
+import {Checkbox, Paper} from "@mui/material";
+
 
 export type TaskType = {
     id: string
@@ -65,8 +65,8 @@ export const Todolist = ({
             {/*<input type="checkbox" checked={task.isDone}*/}
             {/*       onChange={(e) => onChangeHandler(idTodolist, task.id, e.currentTarget.checked)}*/}
             {/*/>*/}
-            <CheckBox checked={task.isDone}
-                      onChange={(isDone)=>onChangeHandler(task.id,isDone)}
+            <Checkbox checked={task.isDone}
+                      onChange={()=>onChangeHandler(task.id,task.isDone)}
                       color={'secondary'}/>
 
 

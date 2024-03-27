@@ -7,6 +7,7 @@ type AddItemFormProps = {
     addItemTitle: (newTitle: string) => void
 }
 export const AddItemForm = ({addItemTitle}: AddItemFormProps) => {
+    console.log('AddItemForm is called')
     const [title, setTitle] = useState("");
     const [error, setError] = useState(false)
 
@@ -27,14 +28,6 @@ export const AddItemForm = ({addItemTitle}: AddItemFormProps) => {
     }
     return (
         <div>
-            {/*<input value={title}*/}
-            {/*       onChange={(e) => {*/}
-            {/*           setTitle(e.currentTarget.value);*/}
-            {/*           error && setError(false)*/}
-            {/*       }}*/}
-            {/*       onKeyDown={addTaskKeyDownHandler}*/}
-            {/*       className={error ? "input-error" : ""}/>*/}
-
             <TextField
                 error={error}
                 size="small"
@@ -44,10 +37,9 @@ export const AddItemForm = ({addItemTitle}: AddItemFormProps) => {
                 value={title}
                 onChange={(e:ChangeEvent<HTMLInputElement>) => {
                     // @ts-ignore
-                    console.log(e.currentTarget.value);
                    // @ts-ignore
                     setTitle(e.currentTarget.value);
-                    error && setError(false);
+                    //error && setError(false);
                 }}
                 onKeyDown={addTaskKeyDownHandler}
                 />
