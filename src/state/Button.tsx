@@ -1,5 +1,5 @@
 import React from 'react';
-import {FilterValuesType} from "./App";
+
 //import {Button} from "@mui/material";
 import Button from "@mui/material/Button";
 
@@ -23,6 +23,7 @@ export const ButtonUniversal = (props: ButtonPropsType) => {
 
     return (
         <Button
+            style={{marginRight: "5px"}}
             className={props.classes}
             disabled={props.isDisabled}
             onClick={props.onClick}

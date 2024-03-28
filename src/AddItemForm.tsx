@@ -1,55 +1,54 @@
+import TextField from '@mui/material/TextField/TextField';
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {ButtonUniversal} from "./Button";
-import TextField from "@mui/material/TextField";
+import {IconButton} from "@mui/material";
+import {AddBox} from "@mui/icons-material";
 
-
-type AddItemFormProps = {
-    addItemTitle: (newTitle: string) => void
+type AddItemFormPropsType = {
+    addItem: (title: string) => void
 }
-export const AddItemForm = ({addItemTitle}: AddItemFormProps) => {
-    console.log('AddItemForm is called')
-    const [title, setTitle] = useState("");
-    const [error, setError] = useState(false)
 
-    const addTitleHandler = () => {
-        const trimmedTaskTitle = title.trim()
-        if (trimmedTaskTitle) {
-            addItemTitle(title)
+export const AddItemForm = React.memo((props: AddItemFormPropsType)=>{
+    console.log('AddItemForm is called')
+    let [title, setTitle] = useState("")
+    let [error, setError] = useState<string | null>(null)
+
+    const addItem = () => {
+        if (title.trim() !== "") {
+            props.addItem(title);
+            setTitle("");
         } else {
-            // alert("In your input just only spaces")
-            setError(true)
+            setError("Title is required");
         }
-        setTitle("")
     }
-    const addTaskKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
+    }
+
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            addTitleHandler()
+            addItem()
+        }
+
+        if(error !== null)
+        setError(null);
+        if (e.key === "Enter") {
+        // if (e.charCode === 13) {
+            addItem();
         }
     }
-    return (
-        <div>
-            <TextField
-                error={error}
-                size="small"
-                id="standard-basic"
-                label={error ? "Field is required" : 'Type something'}
-                variant="standard"
-                value={title}
-                onChange={(e:ChangeEvent<HTMLInputElement>) => {
-                    // @ts-ignore
-                   // @ts-ignore
-                    setTitle(e.currentTarget.value);
-                    //error && setError(false);
-                }}
-                onKeyDown={addTaskKeyDownHandler}
-                />
-            <ButtonUniversal
-                variant={"contained"}
-                title={'+'}
-                onClick={addTitleHandler}
-                isDisabled={!title}
-                sx/>
-            {/*{error && <div className={'red-text'}>Field is required</div>}*/}
-        </div>
-    );
-};
+
+    return <div>
+        <TextField variant="outlined"
+                   error={!!error}
+                   value={title}
+                   onChange={onChangeHandler}
+                   onKeyPress={onKeyPressHandler}
+                   label="Title"
+                   helperText={error}
+        />
+        <IconButton color="primary" onClick={addItem}>
+            <AddBox />
+        </IconButton>
+    </div>
+})
