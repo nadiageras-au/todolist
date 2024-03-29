@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useCallback} from 'react';
+import React, {ChangeEvent, memo, useCallback} from 'react';
 import {FilterValuesType} from './App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
@@ -6,6 +6,7 @@ import {Button, Checkbox, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import {ButtonUniversal} from "./state/Button";
 import {Task} from './Task'
+import {TaskWithRedux} from "./TaskWithRedux";
 
 
 export type TaskType = {
@@ -29,8 +30,8 @@ type PropsType = {
 
 }
 
-export const Todolist = React.memo((props: PropsType) => {
-    console.log("Todolist called");
+export const Todolist = memo((props: PropsType) => {
+    //console.log("Todolist called");
 
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.id);
@@ -65,14 +66,16 @@ export const Todolist = React.memo((props: PropsType) => {
         <div>
             {
                 tasksForTodolist.map(task => {
-                    return <Task
-                        key={task.id}
-                        task={task}
-                        todolistId={props.id}
-                        removeTask={props.removeTask}
-                        changeTaskStatus={props.changeTaskStatus}
-                        changeTaskTitle={props.changeTaskTitle}
-                    />
+                    // return <Task
+                    //     key={task.id}
+                    //     task={task}
+                    //     todolistId={props.id}
+                    //     removeTask={props.removeTask}
+                    //     changeTaskStatus={props.changeTaskStatus}
+                    //     changeTaskTitle={props.changeTaskTitle}
+                    // />
+
+                    return <TaskWithRedux key={task.id} taskId={task.id} todolistId={props.id}/>
                 })
             }
         </div>

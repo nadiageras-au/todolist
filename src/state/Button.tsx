@@ -1,7 +1,7 @@
 import React from 'react';
 
 //import {Button} from "@mui/material";
-import Button from "@mui/material/Button";
+import Button, {ButtonProps} from "@mui/material/Button";
 
 type ButtonPropsType = {
     title: string
