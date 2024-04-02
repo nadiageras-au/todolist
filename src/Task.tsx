@@ -19,7 +19,6 @@ export const Task = React.memo(({
                                     changeTaskStatus,
                                     changeTaskTitle
                                 }: TaskPropsType) => {
-    console.log('Task is called')
 
     const {id, title, isDone} = task
     const onClickHandler = () => removeTask(id, todolistId)
