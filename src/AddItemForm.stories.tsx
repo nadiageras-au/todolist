@@ -37,8 +37,7 @@ export const AddItemFormStory: Story = {
     },
 };
 
- const AddItemFormWithError = memo((props: AddItemFormPropsType)=>{
-    // console.log('AddItemForm is called')
+ const AddItemFormWithError = (props: AddItemFormPropsType)=>{
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>("Title is required")
 
@@ -56,10 +55,6 @@ export const AddItemFormStory: Story = {
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        // if(error) setError(null);
-        // if (e.key === "Enter") {
-        //     addItem()
-        // }
 
         if(error !== null)
         setError(null);
@@ -82,7 +77,7 @@ export const AddItemFormStory: Story = {
             <AddBox />
         </IconButton>
     </div>
-})
+}
 
 export const AddItemFormWithErrorStory: Story = {
    render: () => <AddItemFormWithError addItem={action('Button clicked inside form')}/>
