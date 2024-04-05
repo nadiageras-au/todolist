@@ -1,5 +1,5 @@
 import React, {ChangeEvent, memo, useCallback, useMemo} from 'react';
-import {FilterValuesType} from './App';
+import {FilterValuesType} from './App/App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, Checkbox, IconButton} from "@mui/material";
@@ -42,7 +42,7 @@ export const Todolist = memo((props: PropsType) => {
     }
     const changeTodolistTitle = useCallback((title: string) => {
         props.changeTodolistTitle(props.id, title);
-    }, [props.changeTodolistTitle,props.id])
+    }, [props.changeTodolistTitle, props.id])
 
     const onAllClickHandler = useCallback(() => props.changeFilter("all", props.id), [props.changeFilter, props.id]);
     const onActiveClickHandler = useCallback(() => props.changeFilter("active", props.id), [props.changeFilter, props.id]);
@@ -50,7 +50,7 @@ export const Todolist = memo((props: PropsType) => {
 
     let tasksForTodolist = props.tasks
 
-    useMemo(()=> {
+    useMemo(() => {
         if (props.filter === "active") {
             tasksForTodolist = props.tasks.filter(t => t.isDone === false);
         }
@@ -70,16 +70,17 @@ export const Todolist = memo((props: PropsType) => {
         <div>
             {
                 tasksForTodolist.map(task => {
-                    // return <Task
-                    //     key={task.id}
-                    //     task={task}
-                    //     todolistId={props.id}
-                    //     removeTask={props.removeTask}
-                    //     changeTaskStatus={props.changeTaskStatus}
-                    //     changeTaskTitle={props.changeTaskTitle}
-                    // />
+                    return <Task
+                        key={task.id}
+                        task={task}
+                        todolistId={props.id}
+                        removeTask={props.removeTask}
+                        changeTaskStatus={props.changeTaskStatus}
+                        changeTaskTitle={props.changeTaskTitle}
+                    />
 
-                    return <TaskWithRedux key={task.id} taskId={task.id} todolistId={props.id}/>
+                    // return <TaskWithRedux key={task.id} taskId={task.id} todolistId={props.id}/>
+
                 })
             }
         </div>
