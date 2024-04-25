@@ -1,5 +1,4 @@
 import React, {ChangeEvent, memo, useCallback, useMemo} from 'react';
-import {FilterValuesType} from './App/App';
 import {AddItemForm} from './AddItemForm/AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, Checkbox, IconButton} from "@mui/material";
@@ -7,6 +6,7 @@ import {Delete} from "@mui/icons-material";
 import {ButtonUniversal} from "./state/Button";
 import {Task} from './Task'
 import {TaskWithRedux} from "./TaskWithRedux";
+import {FilterValuesType} from "./App/App";
 
 
 export type TaskType = {

@@ -5,7 +5,7 @@ import {Delete} from "@mui/icons-material";
 import {TaskType} from "./Todolist";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import {TasksStateType} from "./AppWithRedux/AppWithRedux";
+import {TasksStateType} from "./App/App";
 import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
 
 type TaskPropsType = {

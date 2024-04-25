@@ -19,7 +19,7 @@ type ResponseType<T = {}> = {
     "fieldsErrors": FieldErrorType[],
 }
 
-type TodolistType = {
+export type TodolistType = {
     id: string
     title: string
     addedDate: string
