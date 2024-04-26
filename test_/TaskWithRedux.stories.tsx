@@ -2,10 +2,10 @@ import type {Meta, StoryObj} from '@storybook/react';
 import {action} from '@storybook/addon-actions'
 import React, {useState} from "react";
 import {TaskWithRedux} from "./TaskWithRedux";
-import {ReduxStoreProviderDecorator} from "./stories/decorators/ReduxStoreProviderDecorator";
+import {ReduxStoreProviderDecorator} from "../src/stories/decorators/ReduxStoreProviderDecorator";
 import {useSelector} from "react-redux";
-import {AppRootStateType} from "./state/store";
-import {TaskType} from "./Todolist";
+import {AppRootStateType} from "../src/state/store";
+import {TaskType} from "../src/Todolist";
 
 
 // More on how to set up stories at:
