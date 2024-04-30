@@ -8,8 +8,11 @@ import {Task} from './Task'
 
 import {FilterValuesType} from "./App/App";
 import {TaskStatuses, TaskType} from "./api/todolist-api";
-import {useAppDispatch} from "./state/store";
+import {AppRootStateType, useAppDispatch} from "./state/store";
 import {fetchTasksTC} from "./state/tasks-reducer";
+import {useSelector} from "react-redux";
+import {RequestStatusType} from "./App/app-reducer";
+import LinearProgress from "@mui/material/LinearProgress";
 
 
 
@@ -29,7 +32,7 @@ type PropsType = {
 }
 
 export const Todolist = memo((props: PropsType) => {
-    console.log("Todolist called");
+    // const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
 
     const dispatch = useAppDispatch()
 
@@ -67,6 +70,7 @@ export const Todolist = memo((props: PropsType) => {
 
 
     return <div>
+
         <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
             <IconButton onClick={removeTodolist}>
                 <Delete/>

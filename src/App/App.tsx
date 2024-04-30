@@ -9,16 +9,18 @@ import {
 } from '../state/todolists-reducer';
 import {
     addTaskTC,
-    changeTaskTitleAC,
-    deleteTaskTC,  updateTaskStatusTC
+    deleteTaskTC, updateTaskTC,
+    //updateTaskStatusTC
 } from '../state/tasks-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType, useAppDispatch} from '../state/store';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import LinearProgress from '@mui/material/LinearProgress';
 import {Menu} from "@mui/icons-material";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {TaskStatuses, TaskType, TodolistType} from "../api/todolist-api";
 import {Todolist} from "../Todolist";
+import {RequestStatusType} from "./app-reducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -34,8 +36,10 @@ export type TasksStateType = {
 export function App() {
     const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const dispatch = useAppDispatch()
     console.log('app')
+
     useEffect(() => {
         console.log('app useEffect')
         dispatch(fetchTodosTC())
@@ -48,12 +52,11 @@ export function App() {
         dispatch(addTaskTC({todolistId, title}))
     }, [])
     const changeStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
-        dispatch(updateTaskStatusTC(todolistId, id, status));
+        dispatch(updateTaskTC(todolistId, id, {status}))
     }, [])
 
-    const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
-        const action = changeTaskTitleAC(id, newTitle, todolistId);
-        dispatch(action);
+    const changeTaskTitle = useCallback((id: string, title: string, todolistId: string) => {
+        dispatch(updateTaskTC(todolistId, id,{title}))
     }, [dispatch])
 
     const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
@@ -86,6 +89,9 @@ export function App() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                {
+                    status === 'loading' && <LinearProgress color="secondary"/>
+                }
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding: "20px"}}>
