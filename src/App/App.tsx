@@ -4,7 +4,7 @@ import './App.css';
 import {
     addTodolistTC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC, changeTodolistTitleTC, fetchTodosTC,
+    changeTodolistTitleTC, fetchTodosTC,
     removeTodolistTC,
 } from '../state/todolists-reducer';
 import {
@@ -12,20 +12,21 @@ import {
     deleteTaskTC, updateTaskTC,
     //updateTaskStatusTC
 } from '../state/tasks-reducer';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType, useAppDispatch} from '../state/store';
+import  {useAppDispatch, useAppSelector} from '../state/store';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import LinearProgress from '@mui/material/LinearProgress';
 import {Menu} from "@mui/icons-material";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {TaskStatuses, TaskType, TodolistType} from "../api/todolist-api";
 import {Todolist} from "../Todolist";
-import {RequestStatusType} from "./app-reducer";
+import {RequestStatusType} from "../state/app-reducer";
+import {ErrorSnackbar} from "../components/ErrorSnackBar/ErrorSnackBar";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
 export type TodolistDomainType = TodolistType & {
     filter: FilterValuesType
+    entityStatus: RequestStatusType
 }
 
 export type TasksStateType = {
@@ -34,9 +35,10 @@ export type TasksStateType = {
 
 
 export function App() {
-    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
-    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
+    // const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
+    const todolists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists)
+    const tasks = useAppSelector<TasksStateType>(state => state.tasks)
+    const status = useAppSelector<RequestStatusType>(state => state.app.status)
     const dispatch = useAppDispatch()
     console.log('app')
 
@@ -79,6 +81,7 @@ export function App() {
 
     return (
         <div className="App">
+            <ErrorSnackbar/>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
@@ -89,10 +92,11 @@ export function App() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
-                {
-                    status === 'loading' && <LinearProgress color="secondary"/>
-                }
+
             </AppBar>
+            {
+                status === 'loading' && <LinearProgress color="secondary"/>
+            }
             <Container fixed>
                 <Grid container style={{padding: "20px"}}>
                     <AddItemForm addItem={addTodolist}/>
@@ -108,12 +112,13 @@ export function App() {
                                     <Todolist
                                         id={tl.id}
                                         title={tl.title}
+                                        filter={tl.filter}
+                                        entityStatus={tl.entityStatus}
                                         tasks={tasksForTodolist}
                                         removeTask={removeTask}
                                         changeFilter={changeFilter}
                                         addTask={addTask}
                                         changeTaskStatus={changeStatus}
-                                        filter={tl.filter}
                                         removeTodolist={removeTodolist}
                                         changeTaskTitle={changeTaskTitle}
                                         changeTodolistTitle={changeTodolistTitle}

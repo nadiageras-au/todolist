@@ -11,7 +11,7 @@ import {TaskStatuses, TaskType} from "./api/todolist-api";
 import {AppRootStateType, useAppDispatch} from "./state/store";
 import {fetchTasksTC} from "./state/tasks-reducer";
 import {useSelector} from "react-redux";
-import {RequestStatusType} from "./App/app-reducer";
+import {RequestStatusType} from "./state/app-reducer";
 import LinearProgress from "@mui/material/LinearProgress";
 
 
@@ -20,6 +20,7 @@ type PropsType = {
     id: string
     title: string
     tasks: Array<TaskType>
+    entityStatus: RequestStatusType
     removeTask: (taskId: string, todolistId: string) => void
     changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
@@ -72,11 +73,11 @@ export const Todolist = memo((props: PropsType) => {
     return <div>
 
         <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
-            <IconButton onClick={removeTodolist}>
+            <IconButton onClick={removeTodolist} disabled={props.entityStatus === 'loading'}>
                 <Delete/>
             </IconButton>
         </h3>
-        <AddItemForm addItem={addTask}/>
+        <AddItemForm addItem={addTask} disabled={props.entityStatus === 'loading'}/>
         <div>
             {
                 tasksForTodolist.map(task => {

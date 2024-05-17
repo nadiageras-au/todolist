@@ -3,8 +3,10 @@ import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 import {IconButton} from "@mui/material";
 import {AddBox} from "@mui/icons-material";
 import {useAddItemForm} from "./hooks/useAddItemForm";
+import {RequestStatusType} from "../state/app-reducer";
 
 export type AddItemFormPropsType = {
+    disabled?: boolean
     addItem: (title: string) => void
 }
 
@@ -15,7 +17,7 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
         error,
         onChangeHandler,
         onKeyPressHandler,
-        addItem } = useAddItemForm(props.addItem)
+        addItem} = useAddItemForm(props.addItem)
 
 
     return <div>
@@ -26,8 +28,10 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
                    onKeyPress={onKeyPressHandler}
                    label="Title"
                    helperText={error}
+                   disabled={props.disabled}
         />
-        <IconButton color="primary" onClick={addItem}>
+        <IconButton color="primary" onClick={addItem}  disabled={props.disabled}>
+        {/*<IconButton color="primary" onClick={addItem}  disabled={true}>*/}
             <AddBox/>
         </IconButton>
     </div>
