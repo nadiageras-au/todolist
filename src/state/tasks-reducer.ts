@@ -153,12 +153,6 @@ export const addTaskTC = (payload: { todolistId: string, title: string }) => (di
                 dispatch(setAppStatusAC("succeeded"))
             } else {
                 handleServerAppError(dispatch, res.data)
-                // if(res.data.messages.length) {
-                //     dispatch(setErrorStatusAC(res.data.messages[0]))
-                // } else {
-                //     dispatch(setErrorStatusAC('Error is detected'))
-                // }
-                // dispatch(setAppStatusAC("failed"))
             }
         })
         .catch((err: AxiosError) => {
