@@ -12,15 +12,33 @@ import {
     deleteTaskTC, updateTaskTC,
     //updateTaskStatusTC
 } from '../state/tasks-reducer';
-import  {useAppDispatch, useAppSelector} from '../state/store';
+import {useAppDispatch, useAppSelector} from '../state/store';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import LinearProgress from '@mui/material/LinearProgress';
 import {Menu} from "@mui/icons-material";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {TaskStatuses, TaskType, TodolistType} from "../api/todolist-api";
-import {Todolist} from "../Todolist";
+// import {Todolist} from "../Todolist";
 import {RequestStatusType} from "../state/app-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackBar/ErrorSnackBar";
+import {TodosList} from '../components/TodosList/TodosList';
+import {Login} from '../components/Login/Login';
+import {Link, Route, Routes} from "react-router-dom";
+
+//
+// import * as React from "react";
+// import * as ReactDOM from "react-dom";
+// import {
+//     createHashRouter,
+//     RouterProvider,
+// } from "react-router-dom";
+//
+// import Root, { rootLoader } from "./routes/root";
+// import Team, { teamLoader } from "./routes/team";
+
+
+
+
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -35,9 +53,9 @@ export type TasksStateType = {
 
 
 export function App() {
-    // const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
-    const todolists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists)
-    const tasks = useAppSelector<TasksStateType>(state => state.tasks)
+
+    // const todolists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists)
+    // const tasks = useAppSelector<TasksStateType>(state => state.tasks)
     const status = useAppSelector<RequestStatusType>(state => state.app.status)
     const dispatch = useAppDispatch()
     console.log('app')
@@ -58,7 +76,7 @@ export function App() {
     }, [])
 
     const changeTaskTitle = useCallback((id: string, title: string, todolistId: string) => {
-        dispatch(updateTaskTC(todolistId, id,{title}))
+        dispatch(updateTaskTC(todolistId, id, {title}))
     }, [dispatch])
 
     const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
@@ -71,16 +89,36 @@ export function App() {
     }, [])
 
     const changeTodolistTitle = useCallback((id: string, title: string) => {
-        dispatch(changeTodolistTitleTC(id,title));
+        dispatch(changeTodolistTitleTC(id, title));
     }, [])
 
     const addTodolist = useCallback((title: string) => {
         dispatch(addTodolistTC(title));
     }, [])
 
-
+    /** const router = createHashRouter([
+    //     {
+    //         path: "/",
+    //         element: <TodosList removeTask={removeTask}
+    //                             changeFilter={changeFilter}
+    //                             addTask={addTask}
+    //                             changeTaskStatus={changeStatus}
+    //                             removeTodolist={removeTodolist}
+    //                             changeTaskTitle={changeTaskTitle}
+    //                             changeTodolistTitle={changeTodolistTitle}/>,
+    //         loader: rootLoader,
+    //     },
+    //     {
+    //         path: "/login",
+    //         element: <Login />,
+    //         loader: rootLoader,
+    //
+    //     },
+    // ]);
+        **/
     return (
         <div className="App">
+            {/*<RouterProvider router={router} />*/}
             <ErrorSnackbar/>
             <AppBar position="static">
                 <Toolbar>
@@ -91,6 +129,10 @@ export function App() {
                         News
                     </Typography>
                     <Button color="inherit">Login</Button>
+                    <nav>
+                        <Link to="/">Todos</Link>
+                        <Link to="login">Login</Link>
+                    </nav>
                 </Toolbar>
 
             </AppBar>
@@ -98,35 +140,20 @@ export function App() {
                 status === 'loading' && <LinearProgress color="secondary"/>
             }
             <Container fixed>
-                <Grid container style={{padding: "20px"}}>
-                    <AddItemForm addItem={addTodolist}/>
-                </Grid>
-                <Grid container spacing={3}>
-                    {
-                        todolists.map(tl => {
-                            let allTodolistTasks = tasks[tl.id];
-                            let tasksForTodolist = allTodolistTasks;
 
-                            return <Grid item key={tl.id}>
-                                <Paper style={{padding: "10px"}}>
-                                    <Todolist
-                                        id={tl.id}
-                                        title={tl.title}
-                                        filter={tl.filter}
-                                        entityStatus={tl.entityStatus}
-                                        tasks={tasksForTodolist}
-                                        removeTask={removeTask}
-                                        changeFilter={changeFilter}
-                                        addTask={addTask}
-                                        changeTaskStatus={changeStatus}
-                                        removeTodolist={removeTodolist}
-                                        changeTaskTitle={changeTaskTitle}
-                                        changeTodolistTitle={changeTodolistTitle}
-                                    />
-                                </Paper>
-                            </Grid>
-                        })
-                    }
+                <Grid container spacing={3}>
+                    <Routes>
+                        <Route path='/' element={<TodosList removeTask={removeTask}
+                                                            changeFilter={changeFilter}
+                                                            addTask={addTask}
+                                                            changeTaskStatus={changeStatus}
+                                                            removeTodolist={removeTodolist}
+                                                            changeTaskTitle={changeTaskTitle}
+                                                            changeTodolistTitle={changeTodolistTitle}
+                                                            addTodolist={addTodolist}/>}/>
+                        <Route path='/login' element={<Login/>}/>
+                    </Routes>
+
                 </Grid>
             </Container>
         </div>
