@@ -1,5 +1,6 @@
 
 import axios, { AxiosResponse } from 'axios'
+import {LoginParamsType} from "../components/Login/Login";
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -10,7 +11,19 @@ const instance = axios.create({
 
 })
 
+
+
 // api
+
+export const authAPI = {
+    login: (data: LoginParamsType) =>{
+        return instance.post<ResponseType<{userId: number}>>(`/auth/login`, data)
+    },
+    logOut: (data:any)=>{},
+    me: ()=>{
+        return instance.get<ResponseType<UserType>>('/auth/me')
+    }
+}
 export const todolistsAPI = {
     getTodolists() {
         return instance.get<TodolistType[]>('todo-lists');
@@ -55,7 +68,6 @@ export type ResponseType<D = {}> = {
     data: D
 }
 
-
 export enum TaskStatuses {
     New = 0,
     InProgress = 1,
@@ -97,3 +109,8 @@ type GetTasksResponse = {
     items: TaskType[]
 }
 
+type UserType = {
+    id: number
+    email: string
+    login: string
+}

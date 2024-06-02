@@ -16,11 +16,14 @@ import {AddItemForm} from "../../AddItemForm/AddItemForm";
 import {RequestStatusType} from "../../state/app-reducer";
 import {addTaskTC, deleteTaskTC, updateTaskTC} from "../../state/tasks-reducer";
 import LinearProgress from "@mui/material/LinearProgress";
+import {Navigate} from "react-router-dom";
 
 export const TodosList = () => {
     console.log('todoslist')
     const todos = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useAppSelector<TasksStateType>(state => state.tasks)
+    const isLoggedIn = useAppSelector((state)=> state.auth.isLoggedIn)
+
     const dispatch = useAppDispatch()
 
     const status = useAppSelector<RequestStatusType>((state) => state.app.status)
@@ -28,7 +31,9 @@ export const TodosList = () => {
     console.log('app')
 
     useEffect(() => {
-        console.log('app useEffect')
+        if(!isLoggedIn) {
+            return
+        }
         dispatch(fetchTodosTC())
     }, [])
 
@@ -62,6 +67,10 @@ export const TodosList = () => {
     const addTodolist = useCallback((title: string) => {
         dispatch(addTodolistTC(title));
     }, [])
+
+    if(!isLoggedIn) {
+        return <Navigate to={'/login'}/>
+    }
     return (
         <>
             <Grid container style={{padding: "20px"}}>

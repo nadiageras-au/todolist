@@ -7,9 +7,10 @@ import {TaskType, TodolistType} from "../api/todolist-api";
 import {RequestStatusType} from "../state/app-reducer";
 import {ErrorSnackbar} from "../components/ErrorSnackBar/ErrorSnackBar";
 import {Link, Outlet} from "react-router-dom";
-import {useAppSelector} from "../state/store";
+import {useAppDispatch, useAppSelector} from "../state/store";
 import { TodosList } from '../components/TodosList/TodosList';
 import { Login } from '../components/Login/Login';
+import {meTC} from "../state/auth_reducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -24,6 +25,11 @@ export type TasksStateType = {
 
 
 export function App() {
+
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(meTC())
+    }, []);
 
     return (
         <div className="App">

@@ -1,5 +1,3 @@
-
-
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -13,8 +11,22 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {useFormik} from "formik";
+import {loginTC} from "../../state/auth_reducer";
+import {useAppDispatch, useAppSelector} from "../../state/store";
+import {Navigate} from "react-router-dom";
+
+type ErrorType = {
+    email?: string
+    password?: string
+}
+
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+}
 
 function Copyright(props: any) {
     return (
@@ -33,14 +45,18 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export function Login() {
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+
+    const dispatch = useAppDispatch()
+    const isLoggedIn = useAppSelector((state)=> state.auth.isLoggedIn)
+
+    // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    //     event.preventDefault();
+    //     const data = new FormData(event.currentTarget);
+    //     console.log({
+    //         email: data.get('email'),
+    //         password: data.get('password'),
+    //     });
+    // };
 
 
     const formik = useFormik({
@@ -49,15 +65,37 @@ export function Login() {
             password: '',
             rememberMe: false
         },
+        validate: values => {
+            const errors: ErrorType = {};
+
+            if (!values.email.length) {
+                errors.email = 'Required';
+            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+                errors.email = 'Invalid email address';
+            }
+
+            if (!values.password.length) {
+                errors.password = 'Required';
+            } else if (values.password.length < 8) {
+                errors.password = 'Password must be at least 8 symbols';
+            }
+
+            return errors;
+        },
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
+            dispatch(loginTC(values))
+            formik.resetForm();
         },
     });
+
+    if(isLoggedIn) {
+        return <Navigate to={'/todolists'}/>
+    }
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
 
-                <CssBaseline />
+                <CssBaseline/>
                 <Box
                     sx={{
                         marginTop: 8,
@@ -66,14 +104,14 @@ export function Login() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
+                    <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                        <LockOutlinedIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    {/*<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>*/}
-                    <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
+
+                    <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{mt: 1}}>
                         <TextField
                             margin="normal"
                             required
@@ -85,6 +123,8 @@ export function Login() {
                             autoFocus
                             {...formik.getFieldProps("email")}
                         />
+                        {formik.touched.email && formik.errors.email && <div style={{"color": "red"}}>{formik.errors.email}</div>}
+
                         <TextField
                             margin="normal"
                             required
@@ -96,11 +136,13 @@ export function Login() {
                             autoComplete="current-password"
                             {...formik.getFieldProps("password")}
                         />
+                        {formik.touched.password && formik.errors.password ? <div style={{"color": "red"}}>{formik.errors.password}</div> : null}
+
                         <FormControlLabel
                             // control={<Checkbox value="remember" color="primary"
-                            control={<Checkbox  color="primary"
+                            control={<Checkbox color="primary"
                                                {...formik.getFieldProps("rememberMe")}
-                            checked={formik.values.rememberMe}/>}
+                                               checked={formik.values.rememberMe}/>}
                             label="Remember me"
 
                         />
@@ -108,7 +150,7 @@ export function Login() {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{mt: 3, mb: 2}}
                         >
                             Sign In
                         </Button>
@@ -126,7 +168,7 @@ export function Login() {
                         </Grid>
                     </Box>
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
+                <Copyright sx={{mt: 8, mb: 4}}/>
 
             </Container>
         </ThemeProvider>
